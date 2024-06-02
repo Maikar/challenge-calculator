@@ -11,7 +11,8 @@ public class OperationManagerTests
     {
         _sut = new OperationManager();
     }
-    
+   
+    [InlineData("1,2,3,4,5,6,7,8,9,10,11,12", 78, "1+2+3+4+5+6+7+8+9+10+11+12 = 78")]
     [InlineData("5,", 5, "5+0 = 5")]
     [InlineData("5,tytyt", 5, "5+0 = 5")]
     [InlineData("4,-3", 1, "4+-3 = 1")]
@@ -26,14 +27,5 @@ public class OperationManagerTests
         
         Assert.Equal(expectedResult, response.Result);
         Assert.Equal(expectedFormula, response.Formula);
-    }
-
-    [Fact]
-    public void Add_MoreThan2_ThrowsException()
-    {
-        Assert.Throws<InvalidOperationException>(() =>
-        {
-            _sut.Add(new AddRequest("1,1,1"));
-        });
     }
 }

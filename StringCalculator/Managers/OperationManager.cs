@@ -8,11 +8,6 @@ public class OperationManager : IOperationManager
     {
         var numbers = GetRawNumbers(request.Input);
 
-        if (numbers.Length > 2)
-        {
-            throw new InvalidOperationException("Must provide no more than 2 numbers");
-        }
-
         var result = numbers.Sum();
         var formula = $"{string.Join("+", numbers)} = {result}";
         
