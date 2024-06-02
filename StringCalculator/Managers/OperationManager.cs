@@ -6,7 +6,8 @@ public class OperationManager : IOperationManager
 {
     public AddResponse Add(AddRequest request)
     {
-        var numbers = GetRawNumbers(request.Input);
+        var normalizedInput = request.Input?.Replace("\\n", ",");
+        var numbers = GetRawNumbers(normalizedInput);
 
         var result = numbers.Sum();
         var formula = $"{string.Join("+", numbers)} = {result}";
