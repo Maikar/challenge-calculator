@@ -9,6 +9,12 @@ public class OperationManager : IOperationManager
         var normalizedInput = request.Input?.Replace("\\n", ",");
         var numbers = GetRawNumbers(normalizedInput);
 
+        var negativeNumbers = numbers.Where(n => n < 0).ToArray();
+        if (negativeNumbers.Any())
+        {
+            throw new ArgumentOutOfRangeException(nameof(request.Input), $"Negative numbers are not allowed. Found: {string.Join(", ",negativeNumbers)}");
+        }
+        
         var result = numbers.Sum();
         var formula = $"{string.Join("+", numbers)} = {result}";
         

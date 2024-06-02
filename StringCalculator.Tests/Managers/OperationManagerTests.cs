@@ -16,7 +16,6 @@ public class OperationManagerTests
     [InlineData("1,2,3,4,5,6,7,8,9,10,11,12", 78, "1+2+3+4+5+6+7+8+9+10+11+12 = 78")]
     [InlineData("5,", 5, "5+0 = 5")]
     [InlineData("5,tytyt", 5, "5+0 = 5")]
-    [InlineData("4,-3", 1, "4+-3 = 1")]
     [InlineData((string?)null, 0, "0 = 0")]
     [InlineData(" ", 0, "0 = 0")]
     [InlineData("1,5000", 5001, "1+5000 = 5001")]
@@ -28,5 +27,17 @@ public class OperationManagerTests
         
         Assert.Equal(expectedResult, response.Result);
         Assert.Equal(expectedFormula, response.Formula);
+    }
+
+    [InlineData("-3,-5", "Negative numbers are not allowed. Found: -3, -5 (Parameter 'Input')")]
+    [InlineData("4,-3", "Negative numbers are not allowed. Found: -3 (Parameter 'Input')")]
+    [Theory]
+    public void Add_ThrowsOnNegativeNumbers(string input, string expectedExceptionMessage)
+    {
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() =>
+        {
+            _sut.Add(new AddRequest(input));
+        });
+        Assert.Equal(expectedExceptionMessage, exception.Message);
     }
 }
