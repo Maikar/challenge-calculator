@@ -4,9 +4,12 @@ namespace StringCalculator.Managers;
 
 public class OperationManager : IOperationManager
 {
+    private const string CustomDelimiterStart = "//";
+    private const string CustomDelimiterEnd = "\\n";
+    
     public AddResponse Add(AddRequest request)
     {
-        var normalizedInput = request.Input?.Replace("\\n", ",");
+        var normalizedInput = NormalizeInput(request.Input);
         var numbers = GetRawNumbers(normalizedInput);
 
         var negativeNumbers = numbers.Where(n => n < 0).ToArray();
@@ -21,6 +24,23 @@ public class OperationManager : IOperationManager
         var formula = $"{string.Join("+", numbers)} = {result}";
         
         return new AddResponse(result, formula);
+    }
+
+    private string? NormalizeInput(string? input)
+    {
+        // Handle custom delimiters. Must start with delimiter declaration and the ending or we will just treat this
+        // as an invalid number later
+        var delimiterEnd = input?.IndexOf(CustomDelimiterEnd, StringComparison.Ordinal) ?? 0;
+        if (!string.IsNullOrWhiteSpace(input) && input.StartsWith(CustomDelimiterStart) && delimiterEnd > 0)
+        {
+            var delimiterDeclaration = input.Substring(CustomDelimiterStart.Length, delimiterEnd - CustomDelimiterEnd.Length);
+            var numbers = input.Substring(CustomDelimiterStart.Length + delimiterDeclaration.Length + CustomDelimiterEnd.Length);
+
+            return numbers.Replace(delimiterDeclaration, ",");
+        }
+        
+        // default behavior
+        return input?.Replace("\\n", ",");
     }
 
     private IEnumerable<int> ReplaceInvalidNumbers(int[] numbers)
