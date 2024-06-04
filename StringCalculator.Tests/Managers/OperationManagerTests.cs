@@ -12,6 +12,7 @@ public class OperationManagerTests
         _sut = new OperationManager();
     }
   
+    [InlineData("//[***]\\n11***22***33", 66, "11+22+33 = 66")]
     [InlineData("//,6", 6, "0+6 = 6")]
     [InlineData("//,\\n2,ff,100", 102, "2+0+100 = 102")]
     [InlineData("//#\\n2#5", 7, "2+5 = 7")]

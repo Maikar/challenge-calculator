@@ -35,6 +35,8 @@ public class OperationManager : IOperationManager
         {
             var delimiterDeclaration = input.Substring(CustomDelimiterStart.Length, delimiterEnd - CustomDelimiterEnd.Length);
             var numbers = input.Substring(CustomDelimiterStart.Length + delimiterDeclaration.Length + CustomDelimiterEnd.Length);
+            
+            delimiterDeclaration = delimiterDeclaration.TrimStart('[').TrimEnd(']');
 
             return numbers.Replace(delimiterDeclaration, ",");
         }
