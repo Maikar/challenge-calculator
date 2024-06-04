@@ -38,7 +38,14 @@ public class OperationManager : IOperationManager
             
             delimiterDeclaration = delimiterDeclaration.TrimStart('[').TrimEnd(']');
 
-            return numbers.Replace(delimiterDeclaration, ",");
+            var delimiters = delimiterDeclaration.Split("][", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            var normalizedInput = numbers;
+            foreach (var delimiter in delimiters)
+            {
+                normalizedInput = normalizedInput.Replace(delimiter, ",");
+            }
+
+            return normalizedInput;
         }
         
         // default behavior
