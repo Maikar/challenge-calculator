@@ -10,11 +10,15 @@ var provider = services.BuildServiceProvider();
 
 var calculationManager = provider.GetRequiredService<IOperationManager>();
 
-Console.Write("Input: ");
+do
+{
+    Console.Write("Input: ");
 
-var input = Console.ReadLine();
+    var input = Console.ReadLine();
 
-var response = calculationManager.Add(new AddRequest(input));
+    var response = calculationManager.Add(new AddRequest(input));
 
-Console.WriteLine($"Result: {response.Result}");
-Console.WriteLine($"Formula: {response.Formula}");
+    Console.WriteLine($"Result: {response.Result}");
+    Console.WriteLine($"Formula: {response.Formula}");
+    Console.WriteLine("-----------------------------");
+} while (true);
